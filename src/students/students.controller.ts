@@ -10,7 +10,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { StudentsService } from './students.service';
+import { StudentsService } from './students.service.js';
 import { ZodValidationPipe } from 'nestjs-zod';
 import {
   CreateStudentDto,
@@ -20,7 +20,7 @@ import {
   createStudentSchema,
   updateStudentSchema,
   queryStudentsSchema,
-} from './dto/student.dto';
+} from './dto/student.dto.js';
 
 @ApiTags('students')
 @Controller('students')

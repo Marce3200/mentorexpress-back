@@ -4,7 +4,7 @@ import {
   updateStudentSchema,
   queryStudentsSchema,
   studentResponseSchema,
-} from '../../common/validation.schemas';
+} from '../../common/validation.schemas.js';
 
 // Create DTOs from Zod schemas
 export class CreateStudentDto extends createZodDto(createStudentSchema) {}

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { StudentsService } from './students.service';
-import { StudentsController } from './students.controller';
-import { DbModule } from '../db/db.module';
+import { StudentsService } from './students.service.js';
+import { StudentsController } from './students.controller.js';
+import { DbModule } from '../db/db.module.js';
 
 @Module({
   imports: [DbModule],

@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { mentors } from '../db/schema';
+import { mentors } from '../db/schema.js';
 import {
   Campus,
   Subject,
@@ -8,9 +8,9 @@ import {
   MentorInsert,
   MentorUpdate,
   Mentor,
-} from '../db/types';
+} from '../db/types.js';
 import { eq, desc, and, SQL } from 'drizzle-orm';
-import { DrizzleService } from '../db/drizzle.service';
+import { DrizzleService } from '../db/drizzle.service.js';
 
 @Injectable()
 export class MentorsService {

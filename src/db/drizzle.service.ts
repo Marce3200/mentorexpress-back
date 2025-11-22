@@ -1,6 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
-import type { DrizzleDB } from './index';
-import { DRIZZLE } from './db.module';
+import type { DrizzleDB } from './index.js';
+import { DRIZZLE } from './constants.js';
 
 @Injectable()
 export class DrizzleService {

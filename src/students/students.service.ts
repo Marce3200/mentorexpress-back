@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { students } from '../db/schema';
+import { students } from '../db/schema.js';
 import {
   Campus,
   Career,
@@ -7,9 +7,9 @@ import {
   StudentInsert,
   StudentUpdate,
   Student,
-} from '../db/types';
+} from '../db/types.js';
 import { eq, desc } from 'drizzle-orm';
-import { DrizzleService } from '../db/drizzle.service';
+import { DrizzleService } from '../db/drizzle.service.js';
 
 @Injectable()
 export class StudentsService {

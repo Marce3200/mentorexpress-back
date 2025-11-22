@@ -9,7 +9,7 @@ import {
   subjectValues,
   languageValues,
   modalityValues,
-} from './schema';
+} from './schema.js';
 import {
   randFirstName,
   randLastName,

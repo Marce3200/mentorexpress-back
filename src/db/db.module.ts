@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { drizzle } from 'drizzle-orm/mysql2';
 import mysql from 'mysql2/promise';
-import * as schema from './schema';
-import { DrizzleService } from './drizzle.service';
-
-export const DRIZZLE = Symbol('DRIZZLE');
+import * as schema from './schema.js';
+import { DrizzleService } from './drizzle.service.js';
+import { DRIZZLE } from './constants.js';
 
 @Module({
   providers: [

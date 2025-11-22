@@ -5,7 +5,7 @@ import {
   subjectValues,
   languageValues,
   modalityValues,
-} from './schema';
+} from './schema.js';
 
 // Type aliases for enum values
 export type Campus = (typeof campusValues)[number];

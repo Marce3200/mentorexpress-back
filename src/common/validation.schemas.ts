@@ -8,7 +8,7 @@ import {
   subjectValues,
   languageValues,
   modalityValues,
-} from '../db/schema';
+} from '../db/schema.js';
 
 // Create Zod schemas directly from Drizzle schemas
 export const createStudentSchema = createInsertSchema(students).omit({
@@ -21,7 +21,10 @@ export const updateStudentSchema = createInsertSchema(students)
   .omit({ id: true, createdAt: true, updatedAt: true })
   .partial();
 
-export const studentResponseSchema = createSelectSchema(students);
+export const studentResponseSchema = createSelectSchema(students).extend({
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
 export const queryStudentsSchema = z.object({
   campus: z.enum(campusValues).optional(),
   career: z.enum(careerValues).optional(),
@@ -39,7 +42,10 @@ export const updateMentorSchema = createInsertSchema(mentors)
   .omit({ id: true, createdAt: true, updatedAt: true })
   .partial();
 
-export const mentorResponseSchema = createSelectSchema(mentors);
+export const mentorResponseSchema = createSelectSchema(mentors).extend({
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
 export const queryMentorsSchema = z.object({
   campus: z.enum(campusValues).optional(),
   specialtySubject: z.enum(subjectValues).optional(),

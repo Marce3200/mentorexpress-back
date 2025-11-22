@@ -10,7 +10,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { MentorsService } from './mentors.service';
+import { MentorsService } from './mentors.service.js';
 import { ZodValidationPipe } from 'nestjs-zod';
 import {
   CreateMentorDto,
@@ -22,7 +22,7 @@ import {
   updateMentorSchema,
   queryMentorsSchema,
   matchMentorsSchema,
-} from './dto/mentor.dto';
+} from './dto/mentor.dto.js';
 
 @ApiTags('mentors')
 @Controller('mentors')

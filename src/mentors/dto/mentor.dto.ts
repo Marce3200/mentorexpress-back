@@ -5,7 +5,7 @@ import {
   queryMentorsSchema,
   matchMentorsSchema,
   mentorResponseSchema,
-} from '../../common/validation.schemas';
+} from '../../common/validation.schemas.js';
 
 // Create DTOs from Zod schemas
 export class CreateMentorDto extends createZodDto(createMentorSchema) {}
