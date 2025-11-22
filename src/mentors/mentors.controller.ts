@@ -1,61 +1,182 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { MentorsService } from './mentors.service.js';
-import { Prisma } from '@prisma/client';
+import {
+  CreateMentorDto,
+  UpdateMentorDto,
+  MentorResponseDto,
+  MatchMentorsDto,
+} from './dto/mentor.dto.js';
+import { Prisma } from '../generated/client.js';
+import { Campus, Career, Subject, Language, Modality } from '../generated/enums.js';
 
+@ApiTags('mentors')
 @Controller('mentors')
 export class MentorsController {
-    constructor(private readonly mentorsService: MentorsService) { }
+  constructor(private readonly mentorsService: MentorsService) {}
 
-    @Post()
-    create(@Body() createMentorDto: Prisma.MentorCreateInput) {
-        return this.mentorsService.create(createMentorDto);
-    }
+  @Post()
+  @ApiOperation({ summary: 'Crear un nuevo mentor' })
+  @ApiResponse({
+    status: 201,
+    description: 'Mentor creado exitosamente',
+    type: MentorResponseDto,
+  })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  create(@Body() createMentorDto: CreateMentorDto) {
+    return this.mentorsService.create(createMentorDto);
+  }
 
-    @Get()
-    findAll(
-        @Query('campus') campus?: string,
-        @Query('subject') subject?: string,
-        @Query('modality') modality?: string,
-    ) {
-        if (campus) {
-            return this.mentorsService.findByCampus(campus);
-        }
-        if (subject) {
-            return this.mentorsService.findBySpecialtySubject(subject);
-        }
-        if (modality) {
-            return this.mentorsService.findByModality(modality);
-        }
-        return this.mentorsService.findAll();
+  @Get()
+  @ApiOperation({ summary: 'Obtener todos los mentores' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de mentores',
+    type: [MentorResponseDto],
+  })
+  @ApiQuery({
+    name: 'campus',
+    required: false,
+    enum: ['ANTONIO_VARAS', 'VINA_DEL_MAR', 'CONCEPCION'],
+    description: 'Filtrar por sede universitaria',
+  })
+  @ApiQuery({
+    name: 'subject',
+    required: false,
+    enum: ['CALCULUS_I', 'LINEAR_ALGEBRA', 'PHYSICS', 'PROGRAMMING', 'ELECTRONICS'],
+    description: 'Filtrar por asignatura de especialidad',
+  })
+  @ApiQuery({
+    name: 'modality',
+    required: false,
+    enum: ['IN_PERSON', 'ONLINE'],
+    description: 'Filtrar por modalidad',
+  })
+  findAll(
+    @Query('campus') campus?: Campus,
+    @Query('subject') subject?: Subject,
+    @Query('modality') modality?: Modality,
+  ) {
+    if (campus) {
+      return this.mentorsService.findByCampus(campus);
     }
+    if (subject) {
+      return this.mentorsService.findBySpecialtySubject(subject);
+    }
+    if (modality) {
+      return this.mentorsService.findByModality(modality);
+    }
+    return this.mentorsService.findAll();
+  }
 
-    @Get('match')
-    findMatching(
-        @Query('campus') campus?: string,
-        @Query('subject') subject?: string,
-        @Query('modality') modality?: string,
-        @Query('language') language?: string,
-    ) {
-        return this.mentorsService.findMatchingMentors({
-            campus,
-            subject,
-            modality,
-            language,
-        });
-    }
+  @Get('match')
+  @ApiOperation({ summary: 'Buscar mentores compatibles con criterios específicos' })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de mentores compatibles',
+    type: [MentorResponseDto],
+  })
+  @ApiQuery({
+    name: 'campus',
+    required: false,
+    enum: ['ANTONIO_VARAS', 'VINA_DEL_MAR', 'CONCEPCION'],
+    description: 'Sede universitaria preferida',
+  })
+  @ApiQuery({
+    name: 'subject',
+    required: false,
+    enum: ['CALCULUS_I', 'LINEAR_ALGEBRA', 'PHYSICS', 'PROGRAMMING', 'ELECTRONICS'],
+    description: 'Asignatura específica',
+  })
+  @ApiQuery({
+    name: 'modality',
+    required: false,
+    enum: ['IN_PERSON', 'ONLINE'],
+    description: 'Modalidad preferida',
+  })
+  @ApiQuery({
+    name: 'language',
+    required: false,
+    enum: ['SPANISH', 'ENGLISH', 'SPANISH_ENGLISH'],
+    description: 'Idioma preferido',
+  })
+  findMatching(
+    @Query('campus') campus?: Campus,
+    @Query('subject') subject?: Subject,
+    @Query('modality') modality?: Modality,
+    @Query('language') language?: Language,
+  ) {
+    return this.mentorsService.findMatchingMentors({
+      campus,
+      subject,
+      modality,
+      language,
+    });
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.mentorsService.findOne(+id);
-    }
+  @Get(':id')
+  @ApiOperation({ summary: 'Obtener un mentor por ID' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del mentor',
+    type: Number,
+    example: 1,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Mentor encontrado',
+    type: MentorResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Mentor no encontrado' })
+  findOne(@Param('id') id: string) {
+    return this.mentorsService.findOne(+id);
+  }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateMentorDto: Prisma.MentorUpdateInput) {
-        return this.mentorsService.update(+id, updateMentorDto);
-    }
+  @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar un mentor' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del mentor',
+    type: Number,
+    example: 1,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Mentor actualizado exitosamente',
+    type: MentorResponseDto,
+  })
+  @ApiResponse({ status: 404, description: 'Mentor no encontrado' })
+  @ApiResponse({ status: 400, description: 'Datos inválidos' })
+  update(@Param('id') id: string, @Body() updateMentorDto: UpdateMentorDto) {
+    return this.mentorsService.update(+id, updateMentorDto);
+  }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.mentorsService.remove(+id);
-    }
+  @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar un mentor' })
+  @ApiParam({
+    name: 'id',
+    description: 'ID del mentor',
+    type: Number,
+    example: 1,
+  })
+  @ApiResponse({ status: 200, description: 'Mentor eliminado exitosamente' })
+  @ApiResponse({ status: 404, description: 'Mentor no encontrado' })
+  remove(@Param('id') id: string) {
+    return this.mentorsService.remove(+id);
+  }
 }
