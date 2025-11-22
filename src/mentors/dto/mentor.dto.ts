@@ -1,6 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Prisma } from '../../generated/client.js';
-import { Campus, Career, Subject, Language, Modality } from '../../generated/enums.js';
+import {
+  Campus,
+  Career,
+  Subject,
+  Language,
+  Modality,
+} from '../../generated/enums.js';
 
 export class CreateMentorDto implements Prisma.MentorCreateInput {
   @ApiProperty({
@@ -52,7 +58,8 @@ export class CreateMentorDto implements Prisma.MentorCreateInput {
 
   @ApiProperty({
     description: 'Biografía o descripción del mentor',
-    example: 'Ingeniera en Computación con 5 años de experiencia en desarrollo de software',
+    example:
+      'Ingeniera en Computación con 5 años de experiencia en desarrollo de software',
   })
   bio: string;
 

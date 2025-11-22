@@ -8,12 +8,7 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { StudentsService } from './students.service.js';
 import {
   CreateStudentDto,
@@ -106,7 +101,10 @@ export class StudentsController {
     type: Number,
     example: 1,
   })
-  @ApiResponse({ status: 200, description: 'Estudiante eliminado exitosamente' })
+  @ApiResponse({
+    status: 200,
+    description: 'Estudiante eliminado exitosamente',
+  })
   @ApiResponse({ status: 404, description: 'Estudiante no encontrado' })
   remove(@Param('id') id: string) {
     return this.studentsService.remove(+id);

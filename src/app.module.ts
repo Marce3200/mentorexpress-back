@@ -7,8 +7,13 @@ import { StudentsModule } from './students/students.module.js';
 import { MentorsModule } from './mentors/mentors.module.js';
 
 @Module({
-  imports: [ConfigModule.forRoot(), PrismaModule, StudentsModule, MentorsModule],
+  imports: [
+    ConfigModule.forRoot(),
+    PrismaModule,
+    StudentsModule,
+    MentorsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

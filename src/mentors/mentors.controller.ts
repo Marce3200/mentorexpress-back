@@ -8,12 +8,7 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiParam,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { MentorsService } from './mentors.service.js';
 import {
   CreateMentorDto,
@@ -23,7 +18,13 @@ import {
   QueryMentorsDto,
 } from './dto/mentor.dto.js';
 import { Prisma } from '../generated/client.js';
-import { Campus, Career, Subject, Language, Modality } from '../generated/enums.js';
+import {
+  Campus,
+  Career,
+  Subject,
+  Language,
+  Modality,
+} from '../generated/enums.js';
 
 @ApiTags('mentors')
 @Controller('mentors')
@@ -64,7 +65,9 @@ export class MentorsController {
   }
 
   @Get('match')
-  @ApiOperation({ summary: 'Buscar mentores compatibles con criterios específicos' })
+  @ApiOperation({
+    summary: 'Buscar mentores compatibles con criterios específicos',
+  })
   @ApiResponse({
     status: 200,
     description: 'Lista de mentores compatibles',
