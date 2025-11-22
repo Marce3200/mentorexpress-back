@@ -1,4 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import { createZodDto } from 'nestjs-zod';
 import {
   campusValues,
   careerValues,
@@ -6,137 +7,25 @@ import {
   languageValues,
   modalityValues,
 } from '../../db/schema';
-import type {
-  Campus,
-  Career,
-  Subject,
-  Language,
-  Modality,
-  MentorInsert,
-  Mentor,
-} from '../../db/types';
+import {
+  createMentorSchema,
+  updateMentorSchema,
+  queryMentorsSchema,
+  matchMentorsSchema,
+  MentorResponseDto as ZodMentorResponseDto,
+} from '../../common/validation.schemas';
 
-export class CreateMentorDto
-  implements Omit<MentorInsert, 'id' | 'createdAt' | 'updatedAt'>
-{
-  @ApiProperty({
-    description: 'Nombre completo del mentor',
-    example: 'María González',
-  })
-  fullName: string;
+// Create DTOs from Zod schemas
+export class CreateMentorDto extends createZodDto(createMentorSchema) {}
 
-  @ApiProperty({
-    description: 'Correo electrónico único del mentor',
-    example: 'maria.gonzalez@universidad.cl',
-  })
-  email: string;
+export class UpdateMentorDto extends createZodDto(updateMentorSchema) {}
 
-  @ApiProperty({
-    description: 'Sede universitaria donde opera',
-    enum: campusValues,
-    example: 'VINA_DEL_MAR',
-  })
-  campus: Campus;
+export class QueryMentorsDto extends createZodDto(queryMentorsSchema) {}
 
-  @ApiProperty({
-    description: 'Carrera del mentor',
-    enum: careerValues,
-    example: 'COMPUTER_ENGINEERING',
-  })
-  career: Career;
+export class MatchMentorsDto extends createZodDto(matchMentorsSchema) {}
 
-  @ApiProperty({
-    description: 'Asignatura de especialidad',
-    enum: subjectValues,
-    example: 'PROGRAMMING',
-  })
-  specialtySubject: Subject;
-
-  @ApiProperty({
-    description: 'Idiomas que maneja el mentor',
-    enum: languageValues,
-    example: 'SPANISH_ENGLISH',
-  })
-  language: Language;
-
-  @ApiProperty({
-    description: 'Modalidad de mentoría que ofrece',
-    enum: modalityValues,
-    example: 'ONLINE',
-  })
-  modality: Modality;
-
-  @ApiProperty({
-    description: 'Biografía o descripción del mentor',
-    example:
-      'Ingeniera en Computación con 5 años de experiencia en desarrollo web',
-  })
-  bio: string;
-
-  @ApiProperty({
-    description: 'Disponibilidad horaria del mentor',
-    example: 'Lunes a viernes de 18:00 a 22:00',
-  })
-  availability: string;
-}
-
-export class UpdateMentorDto
-  implements Partial<Omit<MentorInsert, 'id' | 'createdAt' | 'updatedAt'>>
-{
-  @ApiPropertyOptional({
-    description: 'Nombre completo del mentor',
-    example: 'María González Pérez',
-  })
-  fullName?: string;
-
-  @ApiPropertyOptional({
-    description: 'Correo electrónico único del mentor',
-    example: 'maria.gonzalez.perez@universidad.cl',
-  })
-  email?: string;
-
-  @ApiPropertyOptional({
-    description: 'Sede universitaria donde opera',
-    enum: campusValues,
-  })
-  campus?: Campus;
-
-  @ApiPropertyOptional({
-    description: 'Carrera del mentor',
-    enum: careerValues,
-  })
-  career?: Career;
-
-  @ApiPropertyOptional({
-    description: 'Asignatura de especialidad',
-    enum: subjectValues,
-  })
-  specialtySubject?: Subject;
-
-  @ApiPropertyOptional({
-    description: 'Idiomas que maneja el mentor',
-    enum: languageValues,
-  })
-  language?: Language;
-
-  @ApiPropertyOptional({
-    description: 'Modalidad de mentoría que ofrece',
-    enum: modalityValues,
-  })
-  modality?: Modality;
-
-  @ApiPropertyOptional({
-    description: 'Biografía o descripción del mentor',
-  })
-  bio?: string;
-
-  @ApiPropertyOptional({
-    description: 'Disponibilidad horaria del mentor',
-  })
-  availability?: string;
-}
-
-export class MentorResponseDto implements Mentor {
+// For response, we can use the inferred type or create a simple class
+export class MentorResponseDto {
   @ApiProperty({
     description: 'ID único del mentor',
     example: 1,
@@ -159,31 +48,31 @@ export class MentorResponseDto implements Mentor {
     description: 'Sede universitaria donde opera',
     enum: campusValues,
   })
-  campus: Campus;
+  campus: ZodMentorResponseDto['campus'];
 
   @ApiProperty({
     description: 'Carrera del mentor',
     enum: careerValues,
   })
-  career: Career;
+  career: ZodMentorResponseDto['career'];
 
   @ApiProperty({
     description: 'Asignatura de especialidad',
     enum: subjectValues,
   })
-  specialtySubject: Subject;
+  specialtySubject: ZodMentorResponseDto['specialtySubject'];
 
   @ApiProperty({
     description: 'Idiomas que maneja el mentor',
     enum: languageValues,
   })
-  language: Language;
+  language: ZodMentorResponseDto['language'];
 
   @ApiProperty({
     description: 'Modalidad de mentoría que ofrece',
     enum: modalityValues,
   })
-  modality: Modality;
+  modality: ZodMentorResponseDto['modality'];
 
   @ApiProperty({
     description: 'Biografía o descripción del mentor',
@@ -208,54 +97,10 @@ export class MentorResponseDto implements Mentor {
   updatedAt: Date;
 }
 
-export class MatchMentorsDto {
-  @ApiPropertyOptional({
-    description: 'Sede específica (opcional)',
-    enum: campusValues,
-  })
-  campus?: Campus;
-
-  @ApiPropertyOptional({
-    description: 'Asignatura específica (opcional)',
-    enum: subjectValues,
-  })
-  subject?: Subject;
-
-  @ApiPropertyOptional({
-    description: 'Idioma preferido (opcional)',
-    enum: languageValues,
-  })
-  language?: Language;
-
-  @ApiPropertyOptional({
-    description: 'Modalidad preferida (opcional)',
-    enum: modalityValues,
-  })
-  modality?: Modality;
-}
-
-export class QueryMentorsDto {
-  @ApiPropertyOptional({
-    description: 'Filtrar por sede universitaria',
-    enum: campusValues,
-  })
-  campus?: Campus;
-
-  @ApiPropertyOptional({
-    description: 'Filtrar por asignatura de especialidad',
-    enum: subjectValues,
-  })
-  specialtySubject?: Subject;
-
-  @ApiPropertyOptional({
-    description: 'Filtrar por modalidad',
-    enum: modalityValues,
-  })
-  modality?: Modality;
-
-  @ApiPropertyOptional({
-    description: 'Filtrar por idioma',
-    enum: languageValues,
-  })
-  language?: Language;
-}
+// Export Zod schemas for use in controllers
+export {
+  createMentorSchema,
+  updateMentorSchema,
+  queryMentorsSchema,
+  matchMentorsSchema,
+};

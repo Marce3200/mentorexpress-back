@@ -7,17 +7,22 @@ import {
   Param,
   Delete,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { StudentsService } from './students.service';
+import { ZodValidationPipe } from 'nestjs-zod';
+import {
+  createStudentSchema,
+  updateStudentSchema,
+  queryStudentsSchema,
+} from '../common/validation.schemas';
 import {
   CreateStudentDto,
   UpdateStudentDto,
   StudentResponseDto,
   QueryStudentsDto,
 } from './dto/student.dto';
-import { campusValues, careerValues, subjectValues } from '../db/schema'; // eslint-disable-line @typescript-eslint/no-unused-vars
-import { Campus, Career, Subject } from '../db/types';
 
 @ApiTags('students')
 @Controller('students')
@@ -25,6 +30,7 @@ export class StudentsController {
   constructor(private readonly studentsService: StudentsService) {}
 
   @Post()
+  @UsePipes(new ZodValidationPipe(createStudentSchema))
   @ApiOperation({ summary: 'Crear un nuevo estudiante' })
   @ApiResponse({
     status: 201,
@@ -37,6 +43,7 @@ export class StudentsController {
   }
 
   @Get()
+  @UsePipes(new ZodValidationPipe(queryStudentsSchema))
   @ApiOperation({ summary: 'Obtener todos los estudiantes' })
   @ApiResponse({
     status: 200,
@@ -76,6 +83,7 @@ export class StudentsController {
   }
 
   @Patch(':id')
+  @UsePipes(new ZodValidationPipe(updateStudentSchema))
   @ApiOperation({ summary: 'Actualizar un estudiante' })
   @ApiParam({
     name: 'id',

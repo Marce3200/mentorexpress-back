@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  UsePipes,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { MentorsService } from './mentors.service';
@@ -17,13 +18,13 @@ import {
   QueryMentorsDto,
   MatchMentorsDto,
 } from './dto/mentor.dto';
+import { ZodValidationPipe } from 'nestjs-zod';
 import {
-  campusValues,
-  subjectValues,
-  modalityValues,
-  languageValues,
-} from '../db/schema';
-import { Campus, Subject, Modality, Language } from '../db/types';
+  createMentorSchema,
+  updateMentorSchema,
+  queryMentorsSchema,
+  matchMentorsSchema,
+} from '../common/validation.schemas';
 
 @ApiTags('mentors')
 @Controller('mentors')
@@ -31,6 +32,7 @@ export class MentorsController {
   constructor(private readonly mentorsService: MentorsService) {}
 
   @Post()
+  @UsePipes(new ZodValidationPipe(createMentorSchema))
   @ApiOperation({ summary: 'Crear un nuevo mentor' })
   @ApiResponse({
     status: 201,
@@ -43,6 +45,7 @@ export class MentorsController {
   }
 
   @Get()
+  @UsePipes(new ZodValidationPipe(queryMentorsSchema))
   @ApiOperation({ summary: 'Obtener todos los mentores' })
   @ApiResponse({
     status: 200,
@@ -64,6 +67,7 @@ export class MentorsController {
   }
 
   @Get('match')
+  @UsePipes(new ZodValidationPipe(matchMentorsSchema))
   @ApiOperation({
     summary: 'Buscar mentores compatibles con criterios específicos',
   })
@@ -74,10 +78,10 @@ export class MentorsController {
   })
   findMatching(@Query() matchDto: MatchMentorsDto) {
     return this.mentorsService.findMatchingMentors({
-      campus: matchDto.campus as Campus,
-      subject: matchDto.subject as Subject,
-      modality: matchDto.modality as Modality,
-      language: matchDto.language as Language,
+      campus: matchDto.campus,
+      subject: matchDto.subject,
+      modality: matchDto.modality,
+      language: matchDto.language,
     });
   }
 
@@ -100,6 +104,7 @@ export class MentorsController {
   }
 
   @Patch(':id')
+  @UsePipes(new ZodValidationPipe(updateMentorSchema))
   @ApiOperation({ summary: 'Actualizar un mentor' })
   @ApiParam({
     name: 'id',
