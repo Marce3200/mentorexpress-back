@@ -54,7 +54,7 @@ npm run prisma:migrate dev
 | **API NestJS** | `3000` | Aplicación principal |
 | **Swagger Docs** | `3000/api` | Documentación interactiva |
 | **MySQL** | `3307` | Base de datos (puerto único) |
-| **phpMyAdmin** | `8081` | Interfaz web BD (puerto único) |
+| **phpMyAdmin** | `8011` | Interfaz web BD (puerto único) |
 
 ## 🚀 Ejecutar la aplicación
 
@@ -88,7 +88,7 @@ npm run start:prod
 
 - **API Principal**: http://localhost:3000
 - **Documentación Swagger**: http://localhost:3000/api
-- **phpMyAdmin**: http://localhost:8081
+- **phpMyAdmin**: http://localhost:8011
   - Usuario: `root`
   - Contraseña: `root_password`
 

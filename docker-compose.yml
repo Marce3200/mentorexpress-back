@@ -35,7 +35,7 @@ services:
       PMA_PASSWORD: root_password
       UPLOAD_LIMIT: 100M
     ports:
-      - "8081:80"
+      - "8011:80"
     depends_on:
       - mysql
     networks:
