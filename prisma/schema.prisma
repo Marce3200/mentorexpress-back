@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+/// Campus - Sede universitaria
+enum Campus {
+  ANTONIO_VARAS
+  VINA_DEL_MAR
+  CONCEPCION
+}
+
+/// Career - Carrera universitaria
+enum Career {
+  CIVIL_ENGINEERING
+  COMPUTER_ENGINEERING
+  ELECTRICAL_ENGINEERING
+  INDUSTRIAL_ENGINEERING
+}
+
+/// Subject - Asignatura
+enum Subject {
+  CALCULUS_I
+  LINEAR_ALGEBRA
+  PHYSICS
+  PROGRAMMING
+  ELECTRONICS
+}
+
+/// Language - Idioma
+enum Language {
+  SPANISH
+  ENGLISH
+  SPANISH_ENGLISH
+}
+
+/// Modality - Modalidad de cursado
+enum Modality {
+  IN_PERSON
+  ONLINE
+}
+
+/// Student - Estudiante que solicita mentoría
+model Student {
+  /// ID único del estudiante
+  id          Int      @id @default(autoincrement())
+  /// Nombre completo del estudiante
+  fullName    String   @map("full_name")
+  /// Correo electrónico único
+  email       String   @unique
+  /// Sede universitaria
+  campus      Campus
+  /// Carrera que cursa
+  career      Career
+  /// Asignatura en la que necesita ayuda
+  subject     Subject
+  /// Año actual que está cursando (1 o 2)
+  currentYear Int      @map("current_year")
+  /// Idioma preferido para la mentoría
+  language    Language
+  /// Modalidad preferida (presencial u online)
+  modality    Modality
+  /// Descripción de la solicitud de mentoría
+  request     String   @db.Text
+  /// Fecha de creación del registro
+  createdAt   DateTime @default(now()) @map("created_at")
+  /// Fecha de última actualización
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("students")
+}
+
+/// Mentor - Mentor que ofrece ayuda académica
+model Mentor {
+  /// ID único del mentor
+  id               Int      @id @default(autoincrement())
+  /// Nombre completo del mentor
+  fullName         String   @map("full_name")
+  /// Correo electrónico único
+  email            String   @unique
+  /// Sede universitaria donde opera
+  campus           Campus
+  /// Carrera del mentor
+  career           Career
+  /// Asignatura de especialidad
+  specialtySubject Subject  @map("specialty_subject")
+  /// Idiomas que maneja el mentor
+  language         Language
+  /// Modalidad de mentoría que ofrece
+  modality         Modality
+  /// Biografía o descripción del mentor
+  bio              String   @db.Text
+  /// Disponibilidad horaria del mentor
+  availability     String   @db.Text
+  /// Fecha de creación del registro
+  createdAt        DateTime @default(now()) @map("created_at")
+  /// Fecha de última actualización
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  @@map("mentors")
+}
