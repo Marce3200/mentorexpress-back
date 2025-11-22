@@ -1,15 +1,15 @@
 # 🎓 Sistema de Mentoría Académica
 
-Un sistema completo de mentoría académica construido con **NestJS**, **Prisma ORM v7** y **MySQL**, con documentación interactiva mediante **Swagger/OpenAPI**.
+Un sistema completo de mentoría académica construido con **NestJS**, **Drizzle ORM** y **MySQL**, con documentación interactiva mediante **Swagger/OpenAPI**.
 
 ## 🚀 Características
 
 - ✅ **API REST completa** para gestión de estudiantes y mentores
-- ✅ **Prisma ORM v7** con adaptadores MariaDB
+- ✅ **Drizzle ORM** con MySQL
 - ✅ **Documentación Swagger** automática e interactiva
 - ✅ **Validación de datos** con DTOs tipados
 - ✅ **Base de datos MySQL** con Docker
-- ✅ **Interfaz phpMyAdmin** para gestión de BD
+- ✅ **Drizzle Studio** para gestión visual de BD
 - ✅ **Runtime ESM** moderno
 - ✅ **TypeScript** completamente tipado
 
@@ -37,15 +37,14 @@ cp .env.example .env
 docker compose up -d
 ```
 
-### 4. Generar cliente Prisma
+### 4. Generar esquema Drizzle
 ```bash
-npm run prisma:generate
+npm run db:generate
 ```
 
 ### 5. Ejecutar migraciones
 ```bash
-npm run prisma:migrate     # Ejecutar migraciones en desarrollo
-npm run prisma:deploy      # Ejecutar migraciones en producción
+npm run db:migrate      # Ejecutar migraciones
 ```
 
 ## 🔧 Puertos Configurados
@@ -55,7 +54,7 @@ npm run prisma:deploy      # Ejecutar migraciones en producción
 | **API NestJS** | `3000` | Aplicación principal |
 | **Swagger Docs** | `3000/api` | Documentación interactiva |
 | **MySQL** | `3307` | Base de datos (puerto único) |
-| **phpMyAdmin** | `8011` | Interfaz web BD (puerto único) |
+| **Drizzle Studio** | Web | Interfaz visual BD |
 
 ## 🚀 Ejecutar la aplicación
 
@@ -92,9 +91,7 @@ npm run deploy  # Compila, migra BD y ejecuta en producción
 
 - **API Principal**: http://localhost:3000
 - **Documentación Swagger**: http://localhost:3000/api
-- **phpMyAdmin**: http://localhost:8011
-  - Usuario: `root`
-  - Contraseña: `root_password`
+- **Drizzle Studio**: `npm run db:studio` (abre en navegador)
 
 ## 🗃️ Modelo de Datos
 
@@ -123,38 +120,42 @@ npm run test:cov
 npm run test:api
 ```
 
-## �️ Comandos disponibles
+## 🖥️ Comandos disponibles
 
 ```bash
 # Desarrollo
 npm run start:dev          # Servidor con hot-reload
-npm run prisma:studio      # Interfaz visual de Prisma
+npm run db:studio          # Interfaz visual de Drizzle
 
 # Base de datos
-npm run prisma:migrate     # ✅ Ejecutar migraciones en desarrollo
-npm run prisma:deploy      # ✅ Ejecutar migraciones en producción
-npm run prisma:generate    # Generar cliente Prisma
+npm run db:generate        # Generar esquema
+npm run db:migrate         # Ejecutar migraciones
+npm run db:seed            # Insertar datos de prueba
 
 # Producción
 npm run build              # Compilar aplicación
-npm run deploy             # ✅ Build + Migrate + Start PROD
+npm run deploy             # Build + Start PROD
 ```
 
-## �📁 Estructura del proyecto
+## 🗂️ Estructura del proyecto
 
 ```
 src/
-├── generated/          # Cliente Prisma generado
-├── mentors/           # Módulo de mentores
-│   ├── dto/          # Data Transfer Objects
+├── db/                 # Configuración de base de datos
+│   ├── schema.ts       # Esquemas Drizzle
+│   ├── types.ts        # Tipos centralizados
+│   ├── db.module.ts    # Módulo de BD
+│   ├── db.service.ts   # Servicio de BD
+│   ├── drizzle.service.ts
+│   ├── seed.ts         # Datos de prueba
+│   └── index.ts        # Exports
+├── mentors/            # Módulo de mentores
+│   ├── dto/           # Data Transfer Objects
 │   ├── mentors.controller.ts
 │   ├── mentors.service.ts
 │   └── mentors.module.ts
-├── prisma/            # Configuración Prisma
-│   ├── prisma.service.ts
-│   └── prisma.module.ts
-├── students/          # Módulo de estudiantes
-│   ├── dto/          # Data Transfer Objects
+├── students/           # Módulo de estudiantes
+│   ├── dto/           # Data Transfer Objects
 │   ├── students.controller.ts
 │   ├── students.service.ts
 │   └── students.module.ts
@@ -167,7 +168,7 @@ src/
 ## 🛠️ Tecnologías utilizadas
 
 - **Framework**: [NestJS](https://nestjs.com/)
-- **ORM**: [Prisma](https://prisma.io/) v7
+- **ORM**: [Drizzle](https://orm.drizzle.team/)
 - **Base de datos**: MySQL con Docker
 - **Documentación**: [Swagger/OpenAPI](https://swagger.io/)
 - **Runtime**: Node.js ESM
@@ -177,5 +178,5 @@ src/
 ## 📖 Más información
 
 - [Documentación NestJS](https://docs.nestjs.com/)
-- [Documentación Prisma](https://www.prisma.io/docs)
+- [Documentación Drizzle](https://orm.drizzle.team/docs/overview)
 - [Swagger/OpenAPI](https://swagger.io/docs/)

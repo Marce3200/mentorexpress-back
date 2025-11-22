@@ -9,9 +9,9 @@ services:
       MYSQL_DATABASE: mentoria_db
       MYSQL_USER: mentoria_user
       MYSQL_PASSWORD: mentoria_password
-      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'no'
     ports:
-      - "3307:3306"
+      - '3307:3306'
     volumes:
       - mysql_data:/var/lib/mysql
       # Custom MySQL configuration - Configuración personalizada de MySQL
@@ -19,28 +19,20 @@ services:
     networks:
       - mentoria-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '-p$$MYSQL_ROOT_PASSWORD',
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
-
-  # phpMyAdmin - Interfaz web para administrar MySQL
-  phpmyadmin:
-    image: phpmyadmin:latest
-    container_name: mentoria-phpmyadmin
-    restart: unless-stopped
-    environment:
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: root_password
-      UPLOAD_LIMIT: 100M
-    ports:
-      - "8011:80"
-    depends_on:
-      - mysql
-    networks:
-      - mentoria-network
 
 volumes:
   mysql_data:

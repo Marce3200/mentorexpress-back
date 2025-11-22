@@ -8,7 +8,7 @@
 docker-compose up -d
 ```
 
-This will start MySQL 8.0 on port `3307` and phpMyAdmin on port `8011`.
+This will start MySQL 8.0 on port `3307`. Use Drizzle Studio for database management: `npm run db:studio`.
 
 ### 2. Create .env file - Crear archivo .env
 
@@ -24,7 +24,7 @@ DATABASE_URL="mysql://mentoria_user:mentoria_password@localhost:3307/mentoria_db
 ### 3. Run migrations - Ejecutar migraciones
 
 ```bash
-npm run prisma:migrate
+npm run db:migrate
 ```
 
 ### 4. Start the application - Iniciar la aplicación
@@ -46,12 +46,10 @@ npm run start:dev
 - **Password:** mentoria_password
 - **Root Password:** root_password
 
-### phpMyAdmin
+### Drizzle Studio
 
-- **URL:** http://localhost:8011
-- **Server:** mysql
-- **Username:** root
-- **Password:** root_password
+- **Command:** `npm run db:studio`
+- **Opens:** Web interface in browser
 
 ---
 
@@ -136,7 +134,6 @@ docker exec -i mentoria-mysql mysql -u root -proot_password mentoria_db < backup
 
 Main Docker Compose configuration file with:
 - MySQL 8.0 service
-- phpMyAdmin service
 - Volume for data persistence
 - Network configuration
 - Health checks
@@ -191,7 +188,7 @@ DATABASE_URL="mysql://mentoria_user:mentoria_password@localhost:3308/mentoria_db
 ```bash
 docker-compose down -v
 docker-compose up -d
-npm run prisma:migrate
+npm run db:migrate
 ```
 
 ---
@@ -202,7 +199,7 @@ npm run prisma:migrate
 > This Docker Compose setup is for **local development only**. For production:
 > 
 > - Use strong passwords
-> - Don't expose phpMyAdmin
+> - Don't expose Drizzle Studio in production
 > - Use environment variables from secrets
 > - Configure proper backups
 > - Use SSL/TLS connections
