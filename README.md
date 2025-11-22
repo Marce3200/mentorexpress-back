@@ -42,9 +42,10 @@ docker compose up -d
 npm run prisma:generate
 ```
 
-### 5. Ejecutar migraciones (opcional)
+### 5. Ejecutar migraciones
 ```bash
-npm run prisma:migrate dev
+npm run prisma:migrate     # Ejecutar migraciones en desarrollo
+npm run prisma:deploy      # Ejecutar migraciones en producción
 ```
 
 ## 🔧 Puertos Configurados
@@ -65,6 +66,9 @@ npm run start:dev
 # Modo producción
 npm run build
 npm run start:prod
+
+# Comando completo de despliegue
+npm run deploy  # Compila, migra BD y ejecuta en producción
 ```
 
 ## 📚 Endpoints de la API
@@ -119,7 +123,24 @@ npm run test:cov
 npm run test:api
 ```
 
-## 📁 Estructura del proyecto
+## �️ Comandos disponibles
+
+```bash
+# Desarrollo
+npm run start:dev          # Servidor con hot-reload
+npm run prisma:studio      # Interfaz visual de Prisma
+
+# Base de datos
+npm run prisma:migrate     # ✅ Ejecutar migraciones en desarrollo
+npm run prisma:deploy      # ✅ Ejecutar migraciones en producción
+npm run prisma:generate    # Generar cliente Prisma
+
+# Producción
+npm run build              # Compilar aplicación
+npm run deploy             # ✅ Build + Migrate + Start PROD
+```
+
+## �📁 Estructura del proyecto
 
 ```
 src/

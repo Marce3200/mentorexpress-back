@@ -9,6 +9,7 @@ services:
       MYSQL_DATABASE: mentoria_db
       MYSQL_USER: mentoria_user
       MYSQL_PASSWORD: mentoria_password
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
     ports:
       - "3307:3306"
     volumes:
