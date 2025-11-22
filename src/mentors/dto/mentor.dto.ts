@@ -213,3 +213,23 @@ export class MatchMentorsDto {
   })
   modality?: Modality;
 }
+
+export class QueryMentorsDto {
+  @ApiPropertyOptional({
+    description: 'Filtrar por sede universitaria',
+    enum: Campus,
+  })
+  campus?: Campus;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por asignatura de especialidad',
+    enum: Subject,
+  })
+  subject?: Subject;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por modalidad',
+    enum: Modality,
+  })
+  modality?: Modality;
+}

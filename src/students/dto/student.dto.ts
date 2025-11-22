@@ -192,3 +192,23 @@ export class StudentResponseDto {
   })
   updatedAt: Date;
 }
+
+export class QueryStudentsDto {
+  @ApiPropertyOptional({
+    description: 'Filtrar por sede universitaria',
+    enum: Campus,
+  })
+  campus?: Campus;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por carrera',
+    enum: Career,
+  })
+  career?: Career;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por asignatura',
+    enum: Subject,
+  })
+  subject?: Subject;
+}

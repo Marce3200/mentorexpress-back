@@ -13,7 +13,6 @@ import {
   ApiOperation,
   ApiResponse,
   ApiParam,
-  ApiQuery,
 } from '@nestjs/swagger';
 import { MentorsService } from './mentors.service.js';
 import {
@@ -21,6 +20,7 @@ import {
   UpdateMentorDto,
   MentorResponseDto,
   MatchMentorsDto,
+  QueryMentorsDto,
 } from './dto/mentor.dto.js';
 import { Prisma } from '../generated/client.js';
 import { Campus, Career, Subject, Language, Modality } from '../generated/enums.js';
@@ -49,29 +49,8 @@ export class MentorsController {
     description: 'Lista de mentores',
     type: [MentorResponseDto],
   })
-  @ApiQuery({
-    name: 'campus',
-    required: false,
-    enum: ['ANTONIO_VARAS', 'VINA_DEL_MAR', 'CONCEPCION'],
-    description: 'Filtrar por sede universitaria',
-  })
-  @ApiQuery({
-    name: 'subject',
-    required: false,
-    enum: ['CALCULUS_I', 'LINEAR_ALGEBRA', 'PHYSICS', 'PROGRAMMING', 'ELECTRONICS'],
-    description: 'Filtrar por asignatura de especialidad',
-  })
-  @ApiQuery({
-    name: 'modality',
-    required: false,
-    enum: ['IN_PERSON', 'ONLINE'],
-    description: 'Filtrar por modalidad',
-  })
-  findAll(
-    @Query('campus') campus?: Campus,
-    @Query('subject') subject?: Subject,
-    @Query('modality') modality?: Modality,
-  ) {
+  findAll(@Query() queryDto: QueryMentorsDto) {
+    const { campus, subject, modality } = queryDto;
     if (campus) {
       return this.mentorsService.findByCampus(campus);
     }
@@ -91,42 +70,8 @@ export class MentorsController {
     description: 'Lista de mentores compatibles',
     type: [MentorResponseDto],
   })
-  @ApiQuery({
-    name: 'campus',
-    required: false,
-    enum: ['ANTONIO_VARAS', 'VINA_DEL_MAR', 'CONCEPCION'],
-    description: 'Sede universitaria preferida',
-  })
-  @ApiQuery({
-    name: 'subject',
-    required: false,
-    enum: ['CALCULUS_I', 'LINEAR_ALGEBRA', 'PHYSICS', 'PROGRAMMING', 'ELECTRONICS'],
-    description: 'Asignatura específica',
-  })
-  @ApiQuery({
-    name: 'modality',
-    required: false,
-    enum: ['IN_PERSON', 'ONLINE'],
-    description: 'Modalidad preferida',
-  })
-  @ApiQuery({
-    name: 'language',
-    required: false,
-    enum: ['SPANISH', 'ENGLISH', 'SPANISH_ENGLISH'],
-    description: 'Idioma preferido',
-  })
-  findMatching(
-    @Query('campus') campus?: Campus,
-    @Query('subject') subject?: Subject,
-    @Query('modality') modality?: Modality,
-    @Query('language') language?: Language,
-  ) {
-    return this.mentorsService.findMatchingMentors({
-      campus,
-      subject,
-      modality,
-      language,
-    });
+  findMatching(@Query() matchDto: MatchMentorsDto) {
+    return this.mentorsService.findMatchingMentors(matchDto);
   }
 
   @Get(':id')

@@ -13,16 +13,15 @@ import {
   ApiOperation,
   ApiResponse,
   ApiParam,
-  ApiQuery,
 } from '@nestjs/swagger';
 import { StudentsService } from './students.service.js';
 import {
   CreateStudentDto,
   UpdateStudentDto,
   StudentResponseDto,
+  QueryStudentsDto,
 } from './dto/student.dto.js';
 import { Prisma } from '../generated/client.js';
-import { Campus, Career, Subject } from '../generated/enums.js';
 
 @ApiTags('students')
 @Controller('students')
@@ -48,29 +47,8 @@ export class StudentsController {
     description: 'Lista de estudiantes',
     type: [StudentResponseDto],
   })
-  @ApiQuery({
-    name: 'campus',
-    required: false,
-    enum: ['ANTONIO_VARAS', 'VINA_DEL_MAR', 'CONCEPCION'],
-    description: 'Filtrar por sede universitaria',
-  })
-  @ApiQuery({
-    name: 'career',
-    required: false,
-    enum: ['CIVIL_ENGINEERING', 'COMPUTER_ENGINEERING', 'ELECTRICAL_ENGINEERING', 'INDUSTRIAL_ENGINEERING'],
-    description: 'Filtrar por carrera',
-  })
-  @ApiQuery({
-    name: 'subject',
-    required: false,
-    enum: ['CALCULUS_I', 'LINEAR_ALGEBRA', 'PHYSICS', 'PROGRAMMING', 'ELECTRONICS'],
-    description: 'Filtrar por asignatura',
-  })
-  findAll(
-    @Query('campus') campus?: Campus,
-    @Query('career') career?: Career,
-    @Query('subject') subject?: Subject,
-  ) {
+  findAll(@Query() queryDto: QueryStudentsDto) {
+    const { campus, career, subject } = queryDto;
     if (campus) {
       return this.studentsService.findByCampus(campus);
     }
