@@ -4,8 +4,8 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { darkModeCss } from './darkModeCss.js';
-import { AppModule } from './app.module.js';
+import { darkModeCss } from './darkModeCss';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -37,4 +37,4 @@ async function bootstrap() {
   );
   console.log(`📖 HTML documentation: file://${process.cwd()}/docs/index.html`);
 }
-bootstrap();
+bootstrap().catch(console.error);

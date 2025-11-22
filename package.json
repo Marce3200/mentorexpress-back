@@ -23,7 +23,7 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
-    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:seed": "node --loader ts-node/esm prisma/seed.ts",
     "test:api": "node test-api.js",
     "deploy": "npm run build && npm run prisma:deploy && npm run start:prod"
   },
@@ -69,6 +69,8 @@
     "typescript-eslint": "^8.20.0"
   },
   "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "extensionsToTreatAsEsm": [".ts"],
     "moduleFileExtensions": [
       "js",
       "json",

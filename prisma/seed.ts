@@ -1,9 +1,15 @@
-import { PrismaClient, Campus, Career, Subject, Language, Modality } from '@prisma/client';
+import {
+  PrismaClient,
+  Campus,
+  Career,
+  Subject,
+  Language,
+  Modality,
+} from '@prisma/client';
 import {
   randFirstName,
   randLastName,
   randEmail,
-  randText,
   randNumber,
   rand,
   randSentence,

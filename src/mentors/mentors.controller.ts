@@ -9,22 +9,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { MentorsService } from './mentors.service.js';
+import { MentorsService } from './mentors.service';
 import {
   CreateMentorDto,
   UpdateMentorDto,
   MentorResponseDto,
   MatchMentorsDto,
   QueryMentorsDto,
-} from './dto/mentor.dto.js';
-import { Prisma } from '../generated/client.js';
-import {
-  Campus,
-  Career,
-  Subject,
-  Language,
-  Modality,
-} from '../generated/enums.js';
+} from './dto/mentor.dto';
 
 @ApiTags('mentors')
 @Controller('mentors')

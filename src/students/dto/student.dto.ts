@@ -1,12 +1,12 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Prisma } from '../../generated/client.js';
+import { Prisma } from '../../generated/client';
 import {
   Campus,
   Career,
   Subject,
   Language,
   Modality,
-} from '../../generated/enums.js';
+} from '../../generated/enums';
 
 export class CreateStudentDto implements Prisma.StudentCreateInput {
   @ApiProperty({

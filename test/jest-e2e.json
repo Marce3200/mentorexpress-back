@@ -1,4 +1,6 @@
 {
+  "preset": "ts-jest/presets/default-esm",
+  "extensionsToTreatAsEsm": [".ts"],
   "moduleFileExtensions": ["js", "json", "ts"],
   "rootDir": ".",
   "testEnvironment": "node",

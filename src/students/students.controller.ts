@@ -9,14 +9,13 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
-import { StudentsService } from './students.service.js';
+import { StudentsService } from './students.service';
 import {
   CreateStudentDto,
   UpdateStudentDto,
   StudentResponseDto,
   QueryStudentsDto,
-} from './dto/student.dto.js';
-import { Prisma } from '../generated/client.js';
+} from './dto/student.dto';
 
 @ApiTags('students')
 @Controller('students')
