@@ -13,15 +13,13 @@ import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { StudentsService } from './students.service';
 import { ZodValidationPipe } from 'nestjs-zod';
 import {
-  createStudentSchema,
-  updateStudentSchema,
-  queryStudentsSchema,
-} from '../common/validation.schemas';
-import {
   CreateStudentDto,
   UpdateStudentDto,
   StudentResponseDto,
   QueryStudentsDto,
+  createStudentSchema,
+  updateStudentSchema,
+  queryStudentsSchema,
 } from './dto/student.dto';
 
 @ApiTags('students')

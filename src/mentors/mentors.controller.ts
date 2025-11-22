@@ -11,20 +11,18 @@ import {
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { MentorsService } from './mentors.service';
+import { ZodValidationPipe } from 'nestjs-zod';
 import {
   CreateMentorDto,
   UpdateMentorDto,
   MentorResponseDto,
   QueryMentorsDto,
   MatchMentorsDto,
-} from './dto/mentor.dto';
-import { ZodValidationPipe } from 'nestjs-zod';
-import {
   createMentorSchema,
   updateMentorSchema,
   queryMentorsSchema,
   matchMentorsSchema,
-} from '../common/validation.schemas';
+} from './dto/mentor.dto';
 
 @ApiTags('mentors')
 @Controller('mentors')
