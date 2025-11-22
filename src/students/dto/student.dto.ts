@@ -1,14 +1,24 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Prisma } from '../../generated/client';
 import {
+  campusValues,
+  careerValues,
+  subjectValues,
+  languageValues,
+  modalityValues,
+} from '../../db/schema';
+import type {
   Campus,
   Career,
   Subject,
   Language,
   Modality,
-} from '../../generated/enums';
+  StudentInsert,
+  Student,
+} from '../../db/types';
 
-export class CreateStudentDto implements Prisma.StudentCreateInput {
+export class CreateStudentDto
+  implements Omit<StudentInsert, 'id' | 'createdAt' | 'updatedAt'>
+{
   @ApiProperty({
     description: 'Nombre completo del estudiante',
     example: 'Juan Pérez',
@@ -23,22 +33,22 @@ export class CreateStudentDto implements Prisma.StudentCreateInput {
 
   @ApiProperty({
     description: 'Sede universitaria',
-    enum: Campus,
-    example: Campus.VINA_DEL_MAR,
+    enum: campusValues,
+    example: 'VINA_DEL_MAR',
   })
   campus: Campus;
 
   @ApiProperty({
     description: 'Carrera que cursa',
-    enum: Career,
-    example: Career.COMPUTER_ENGINEERING,
+    enum: careerValues,
+    example: 'COMPUTER_ENGINEERING',
   })
   career: Career;
 
   @ApiProperty({
     description: 'Asignatura en la que necesita ayuda',
-    enum: Subject,
-    example: Subject.PROGRAMMING,
+    enum: subjectValues,
+    example: 'PROGRAMMING',
   })
   subject: Subject;
 
@@ -52,15 +62,15 @@ export class CreateStudentDto implements Prisma.StudentCreateInput {
 
   @ApiProperty({
     description: 'Idioma preferido para la mentoría',
-    enum: Language,
-    example: Language.SPANISH_ENGLISH,
+    enum: languageValues,
+    example: 'SPANISH_ENGLISH',
   })
   language: Language;
 
   @ApiProperty({
     description: 'Modalidad preferida',
-    enum: Modality,
-    example: Modality.ONLINE,
+    enum: modalityValues,
+    example: 'ONLINE',
   })
   modality: Modality;
 
@@ -71,7 +81,9 @@ export class CreateStudentDto implements Prisma.StudentCreateInput {
   request: string;
 }
 
-export class UpdateStudentDto implements Prisma.StudentUpdateInput {
+export class UpdateStudentDto
+  implements Partial<Omit<StudentInsert, 'id' | 'createdAt' | 'updatedAt'>>
+{
   @ApiPropertyOptional({
     description: 'Nombre completo del estudiante',
     example: 'Juan Pérez García',
@@ -86,21 +98,21 @@ export class UpdateStudentDto implements Prisma.StudentUpdateInput {
 
   @ApiPropertyOptional({
     description: 'Sede universitaria',
-    enum: Campus,
+    enum: campusValues,
   })
-  campus?: Campus;
+  campus?: (typeof campusValues)[number];
 
   @ApiPropertyOptional({
     description: 'Carrera que cursa',
-    enum: Career,
+    enum: careerValues,
   })
-  career?: Career;
+  career?: (typeof careerValues)[number];
 
   @ApiPropertyOptional({
     description: 'Asignatura en la que necesita ayuda',
-    enum: Subject,
+    enum: subjectValues,
   })
-  subject?: Subject;
+  subject?: (typeof subjectValues)[number];
 
   @ApiPropertyOptional({
     description: 'Año actual que está cursando',
@@ -111,15 +123,15 @@ export class UpdateStudentDto implements Prisma.StudentUpdateInput {
 
   @ApiPropertyOptional({
     description: 'Idioma preferido para la mentoría',
-    enum: Language,
+    enum: languageValues,
   })
-  language?: Language;
+  language?: (typeof languageValues)[number];
 
   @ApiPropertyOptional({
     description: 'Modalidad preferida',
-    enum: Modality,
+    enum: modalityValues,
   })
-  modality?: Modality;
+  modality?: (typeof modalityValues)[number];
 
   @ApiPropertyOptional({
     description: 'Descripción de la solicitud de mentoría',
@@ -127,7 +139,7 @@ export class UpdateStudentDto implements Prisma.StudentUpdateInput {
   request?: string;
 }
 
-export class StudentResponseDto {
+export class StudentResponseDto implements Student {
   @ApiProperty({
     description: 'ID único del estudiante',
     example: 1,
@@ -148,19 +160,19 @@ export class StudentResponseDto {
 
   @ApiProperty({
     description: 'Sede universitaria',
-    enum: Campus,
+    enum: campusValues,
   })
   campus: Campus;
 
   @ApiProperty({
     description: 'Carrera que cursa',
-    enum: Career,
+    enum: careerValues,
   })
   career: Career;
 
   @ApiProperty({
     description: 'Asignatura en la que necesita ayuda',
-    enum: Subject,
+    enum: subjectValues,
   })
   subject: Subject;
 
@@ -171,13 +183,13 @@ export class StudentResponseDto {
 
   @ApiProperty({
     description: 'Idioma preferido para la mentoría',
-    enum: Language,
+    enum: languageValues,
   })
   language: Language;
 
   @ApiProperty({
     description: 'Modalidad preferida',
-    enum: Modality,
+    enum: modalityValues,
   })
   modality: Modality;
 
@@ -202,19 +214,19 @@ export class StudentResponseDto {
 export class QueryStudentsDto {
   @ApiPropertyOptional({
     description: 'Filtrar por sede universitaria',
-    enum: Campus,
+    enum: campusValues,
   })
   campus?: Campus;
 
   @ApiPropertyOptional({
     description: 'Filtrar por carrera',
-    enum: Career,
+    enum: careerValues,
   })
   career?: Career;
 
   @ApiPropertyOptional({
     description: 'Filtrar por asignatura',
-    enum: Subject,
+    enum: subjectValues,
   })
   subject?: Subject;
 }

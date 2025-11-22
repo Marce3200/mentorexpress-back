@@ -1,14 +1,24 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Prisma } from '../../generated/client';
 import {
+  campusValues,
+  careerValues,
+  subjectValues,
+  languageValues,
+  modalityValues,
+} from '../../db/schema';
+import type {
   Campus,
   Career,
   Subject,
   Language,
   Modality,
-} from '../../generated/enums';
+  MentorInsert,
+  Mentor,
+} from '../../db/types';
 
-export class CreateMentorDto implements Prisma.MentorCreateInput {
+export class CreateMentorDto
+  implements Omit<MentorInsert, 'id' | 'createdAt' | 'updatedAt'>
+{
   @ApiProperty({
     description: 'Nombre completo del mentor',
     example: 'María González',
@@ -23,92 +33,95 @@ export class CreateMentorDto implements Prisma.MentorCreateInput {
 
   @ApiProperty({
     description: 'Sede universitaria donde opera',
-    enum: Campus,
-    example: Campus.VINA_DEL_MAR,
+    enum: campusValues,
+    example: 'VINA_DEL_MAR',
   })
   campus: Campus;
 
   @ApiProperty({
     description: 'Carrera del mentor',
-    enum: Career,
-    example: Career.COMPUTER_ENGINEERING,
+    enum: careerValues,
+    example: 'COMPUTER_ENGINEERING',
   })
   career: Career;
 
   @ApiProperty({
     description: 'Asignatura de especialidad',
-    enum: Subject,
-    example: Subject.PROGRAMMING,
+    enum: subjectValues,
+    example: 'PROGRAMMING',
   })
   specialtySubject: Subject;
 
   @ApiProperty({
     description: 'Idiomas que maneja el mentor',
-    enum: Language,
-    example: Language.SPANISH_ENGLISH,
+    enum: languageValues,
+    example: 'SPANISH_ENGLISH',
   })
   language: Language;
 
   @ApiProperty({
     description: 'Modalidad de mentoría que ofrece',
-    enum: Modality,
-    example: Modality.ONLINE,
+    enum: modalityValues,
+    example: 'ONLINE',
   })
   modality: Modality;
 
   @ApiProperty({
     description: 'Biografía o descripción del mentor',
     example:
-      'Ingeniera en Computación con 5 años de experiencia en desarrollo de software',
+      'Ingeniera en Computación con 5 años de experiencia en desarrollo web',
   })
   bio: string;
 
   @ApiProperty({
     description: 'Disponibilidad horaria del mentor',
-    example: 'Lunes a viernes de 18:00 a 22:00, sábados de 10:00 a 14:00',
+    example: 'Lunes a viernes de 18:00 a 22:00',
   })
   availability: string;
 }
 
-export class UpdateMentorDto implements Prisma.MentorUpdateInput {
+export class UpdateMentorDto
+  implements Partial<Omit<MentorInsert, 'id' | 'createdAt' | 'updatedAt'>>
+{
   @ApiPropertyOptional({
     description: 'Nombre completo del mentor',
-    example: 'María González Rodríguez',
+    example: 'María González Pérez',
   })
   fullName?: string;
 
   @ApiPropertyOptional({
     description: 'Correo electrónico único del mentor',
+    example: 'maria.gonzalez.perez@universidad.cl',
   })
   email?: string;
 
   @ApiPropertyOptional({
     description: 'Sede universitaria donde opera',
-    enum: Campus,
+    enum: campusValues,
   })
   campus?: Campus;
 
   @ApiPropertyOptional({
     description: 'Carrera del mentor',
-    enum: Career,
+    enum: careerValues,
   })
   career?: Career;
 
   @ApiPropertyOptional({
     description: 'Asignatura de especialidad',
-    enum: Subject,
+    enum: subjectValues,
   })
   specialtySubject?: Subject;
 
   @ApiPropertyOptional({
     description: 'Idiomas que maneja el mentor',
-    enum: Language,
+    enum: languageValues,
   })
   language?: Language;
 
   @ApiPropertyOptional({
     description: 'Modalidad de mentoría que ofrece',
-    enum: Modality,
+    enum: modalityValues,
   })
   modality?: Modality;
 
@@ -123,7 +136,7 @@ export class UpdateMentorDto implements Prisma.MentorUpdateInput {
   availability?: string;
 }
 
-export class MentorResponseDto {
+export class MentorResponseDto implements Mentor {
   @ApiProperty({
     description: 'ID único del mentor',
     example: 1,
@@ -144,31 +157,31 @@ export class MentorResponseDto {
 
   @ApiProperty({
     description: 'Sede universitaria donde opera',
-    enum: Campus,
+    enum: campusValues,
   })
   campus: Campus;
 
   @ApiProperty({
     description: 'Carrera del mentor',
-    enum: Career,
+    enum: careerValues,
   })
   career: Career;
 
   @ApiProperty({
     description: 'Asignatura de especialidad',
-    enum: Subject,
+    enum: subjectValues,
   })
   specialtySubject: Subject;
 
   @ApiProperty({
     description: 'Idiomas que maneja el mentor',
-    enum: Language,
+    enum: languageValues,
   })
   language: Language;
 
   @ApiProperty({
     description: 'Modalidad de mentoría que ofrece',
-    enum: Modality,
+    enum: modalityValues,
   })
   modality: Modality;
 
@@ -198,25 +211,25 @@ export class MentorResponseDto {
 export class MatchMentorsDto {
   @ApiPropertyOptional({
     description: 'Sede específica (opcional)',
-    enum: Campus,
+    enum: campusValues,
   })
   campus?: Campus;
 
   @ApiPropertyOptional({
     description: 'Asignatura específica (opcional)',
-    enum: Subject,
+    enum: subjectValues,
   })
   subject?: Subject;
 
   @ApiPropertyOptional({
     description: 'Idioma preferido (opcional)',
-    enum: Language,
+    enum: languageValues,
   })
   language?: Language;
 
   @ApiPropertyOptional({
     description: 'Modalidad preferida (opcional)',
-    enum: Modality,
+    enum: modalityValues,
   })
   modality?: Modality;
 }
@@ -224,19 +237,25 @@ export class MatchMentorsDto {
 export class QueryMentorsDto {
   @ApiPropertyOptional({
     description: 'Filtrar por sede universitaria',
-    enum: Campus,
+    enum: campusValues,
   })
   campus?: Campus;
 
   @ApiPropertyOptional({
     description: 'Filtrar por asignatura de especialidad',
-    enum: Subject,
+    enum: subjectValues,
   })
-  subject?: Subject;
+  specialtySubject?: Subject;
 
   @ApiPropertyOptional({
     description: 'Filtrar por modalidad',
-    enum: Modality,
+    enum: modalityValues,
   })
   modality?: Modality;
+
+  @ApiPropertyOptional({
+    description: 'Filtrar por idioma',
+    enum: languageValues,
+  })
+  language?: Language;
 }

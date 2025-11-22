@@ -14,9 +14,16 @@ import {
   CreateMentorDto,
   UpdateMentorDto,
   MentorResponseDto,
-  MatchMentorsDto,
   QueryMentorsDto,
+  MatchMentorsDto,
 } from './dto/mentor.dto';
+import {
+  campusValues,
+  subjectValues,
+  modalityValues,
+  languageValues,
+} from '../db/schema';
+import { Campus, Subject, Modality, Language } from '../db/types';
 
 @ApiTags('mentors')
 @Controller('mentors')
@@ -43,12 +50,12 @@ export class MentorsController {
     type: [MentorResponseDto],
   })
   findAll(@Query() queryDto: QueryMentorsDto) {
-    const { campus, subject, modality } = queryDto;
+    const { campus, specialtySubject, modality } = queryDto;
     if (campus) {
       return this.mentorsService.findByCampus(campus);
     }
-    if (subject) {
-      return this.mentorsService.findBySpecialtySubject(subject);
+    if (specialtySubject) {
+      return this.mentorsService.findBySpecialtySubject(specialtySubject);
     }
     if (modality) {
       return this.mentorsService.findByModality(modality);
@@ -66,7 +73,12 @@ export class MentorsController {
     type: [MentorResponseDto],
   })
   findMatching(@Query() matchDto: MatchMentorsDto) {
-    return this.mentorsService.findMatchingMentors(matchDto);
+    return this.mentorsService.findMatchingMentors({
+      campus: matchDto.campus as Campus,
+      subject: matchDto.subject as Subject,
+      modality: matchDto.modality as Modality,
+      language: matchDto.language as Language,
+    });
   }
 
   @Get(':id')

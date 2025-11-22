@@ -1,62 +1,95 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from '../prisma/prisma.service';
-import { Student, Prisma } from '@prisma/client';
+import { students } from '../db/schema';
+import {
+  Campus,
+  Career,
+  Subject,
+  StudentInsert,
+  StudentUpdate,
+  Student,
+} from '../db/types';
+import { eq, desc } from 'drizzle-orm';
+import { DrizzleService } from '../db/drizzle.service';
 
 @Injectable()
 export class StudentsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private drizzleService: DrizzleService) {}
 
-  async create(data: Prisma.StudentCreateInput): Promise<Student> {
-    return this.prisma.student.create({ data });
+  async create(data: StudentInsert): Promise<Student> {
+    const result = await this.drizzleService.db
+      .insert(students)
+      .values(data)
+      .$returningId();
+    const [inserted] = await this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.id, result[0].id));
+    return inserted;
   }
 
   async findAll(): Promise<Student[]> {
-    return this.prisma.student.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+    return this.drizzleService.db
+      .select()
+      .from(students)
+      .orderBy(desc(students.createdAt));
   }
 
   async findOne(id: number): Promise<Student | null> {
-    return this.prisma.student.findUnique({
-      where: { id },
-    });
+    const result = await this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.id, id));
+    return result[0] || null;
   }
 
   async findByEmail(email: string): Promise<Student | null> {
-    return this.prisma.student.findUnique({
-      where: { email },
-    });
+    const result = await this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.email, email));
+    return result[0] || null;
   }
 
-  async update(id: number, data: Prisma.StudentUpdateInput): Promise<Student> {
-    return this.prisma.student.update({
-      where: { id },
-      data,
-    });
+  async update(id: number, data: StudentUpdate): Promise<Student> {
+    await this.drizzleService.db
+      .update(students)
+      .set(data)
+      .where(eq(students.id, id));
+    const result = await this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.id, id));
+    return result[0];
   }
 
   async remove(id: number): Promise<Student> {
-    return this.prisma.student.delete({
-      where: { id },
-    });
+    const result = await this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.id, id));
+    await this.drizzleService.db.delete(students).where(eq(students.id, id));
+    return result[0];
   }
 
   // Specific searches - Búsquedas específicas
-  async findByCampus(campus: string): Promise<Student[]> {
-    return this.prisma.student.findMany({
-      where: { campus: campus as any },
-    });
+  async findByCampus(campus: Campus): Promise<Student[]> {
+    return this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.campus, campus));
   }
 
-  async findByCareer(career: string): Promise<Student[]> {
-    return this.prisma.student.findMany({
-      where: { career: career as any },
-    });
+  async findByCareer(career: Career): Promise<Student[]> {
+    return this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.career, career));
   }
 
-  async findBySubject(subject: string): Promise<Student[]> {
-    return this.prisma.student.findMany({
-      where: { subject: subject as any },
-    });
+  async findBySubject(subject: Subject): Promise<Student[]> {
+    return this.drizzleService.db
+      .select()
+      .from(students)
+      .where(eq(students.subject, subject));
   }
 }

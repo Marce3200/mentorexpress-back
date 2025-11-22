@@ -16,6 +16,8 @@ import {
   StudentResponseDto,
   QueryStudentsDto,
 } from './dto/student.dto';
+import { campusValues, careerValues, subjectValues } from '../db/schema'; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { Campus, Career, Subject } from '../db/types';
 
 @ApiTags('students')
 @Controller('students')
