@@ -99,7 +99,7 @@ npm run deploy  # Compila, migra BD y ejecuta en producción
 - Nombre completo, email, sede, carrera, asignatura, año, idioma, modalidad, descripción
 
 ### Mentores
-- Nombre completo, email, sede, carrera, especialidad, idiomas, modalidad, bio, disponibilidad
+- Nombre completo, email, sede, carrera, especialidad, idioma, modalidad, bio, disponibilidad
 
 ## 🧪 Ejecutar pruebas
 

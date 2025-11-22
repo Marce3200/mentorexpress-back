@@ -88,7 +88,7 @@ async function testAPI() {
   console.log('\n' + '='.repeat(50));
   console.log('🎉 Pruebas completadas!');
   console.log('📚 Documentación Swagger: http://localhost:3000/api');
-  console.log('🗄️ phpMyAdmin: http://localhost:8081');
+  console.log('🗄️ Drizzle Studio: npm run db:studio (abre en navegador)');
 }
 
 // Ejecutar pruebas
