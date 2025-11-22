@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
-import { MentorsService } from './mentors.service';
+import { MentorsService } from './mentors.service.js';
 import { Prisma } from '@prisma/client';
 
 @Controller('mentors')
