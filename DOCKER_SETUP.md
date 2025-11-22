@@ -8,9 +8,7 @@
 docker-compose up -d
 ```
 
-This will start:
-- MySQL 8.0 on port `3306`
-- phpMyAdmin on port `8080`
+This will start MySQL 8.0 on port `3307` and phpMyAdmin on port `8011`.
 
 ### 2. Create .env file - Crear archivo .env
 
@@ -20,7 +18,7 @@ cp .env.example .env
 
 The default connection string is already configured:
 ```
-DATABASE_URL="mysql://mentoria_user:mentoria_password@localhost:3306/mentoria_db"
+DATABASE_URL="mysql://mentoria_user:mentoria_password@localhost:3307/mentoria_db"
 ```
 
 ### 3. Run migrations - Ejecutar migraciones
@@ -50,7 +48,7 @@ npm run start:dev
 
 ### phpMyAdmin
 
-- **URL:** http://localhost:8080
+- **URL:** http://localhost:8011
 - **Server:** mysql
 - **Username:** root
 - **Password:** root_password
@@ -157,16 +155,16 @@ MySQL custom configuration:
 
 ### Port already in use - Puerto ya en uso
 
-If port 3306 is already in use, modify `docker-compose.yml`:
+If port 3307 is already in use, modify `docker-compose.yml`:
 
 ```yaml
 ports:
-  - "3307:3306"  # Use port 3307 instead
+  - "3308:3306"  # Use port 3308 instead
 ```
 
 And update your `.env`:
 ```
-DATABASE_URL="mysql://mentoria_user:mentoria_password@localhost:3307/mentoria_db"
+DATABASE_URL="mysql://mentoria_user:mentoria_password@localhost:3308/mentoria_db"
 ```
 
 ### Can't connect to database - No se puede conectar a la base de datos
