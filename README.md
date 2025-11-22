@@ -1,98 +1,160 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🎓 Sistema de Mentoría Académica
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Un sistema completo de mentoría académica construido con **NestJS**, **Prisma ORM v7** y **MySQL**, con documentación interactiva mediante **Swagger/OpenAPI**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 🚀 Características
 
-## Description
+- ✅ **API REST completa** para gestión de estudiantes y mentores
+- ✅ **Prisma ORM v7** con adaptadores MariaDB
+- ✅ **Documentación Swagger** automática e interactiva
+- ✅ **Validación de datos** con DTOs tipados
+- ✅ **Base de datos MySQL** con Docker
+- ✅ **Interfaz phpMyAdmin** para gestión de BD
+- ✅ **Runtime ESM** moderno
+- ✅ **TypeScript** completamente tipado
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 📋 Requisitos Previos
 
-## Project setup
+- **Node.js** 18+ con soporte ESM
+- **Docker** y **Docker Compose**
+- **npm** o **yarn**
 
+## 🛠️ Instalación y Configuración
+
+### 1. Instalar dependencias
 ```bash
-$ npm install
+npm install
 ```
 
-## Compile and run the project
-
+### 2. Configurar variables de entorno
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+cp .env.example .env
+# Editar .env según sea necesario
 ```
 
-## Run tests
-
+### 3. Levantar servicios de base de datos
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker compose up -d
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
+### 4. Generar cliente Prisma
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+npm run prisma:generate
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### 5. Ejecutar migraciones (opcional)
+```bash
+npm run prisma:migrate dev
+```
 
-## Resources
+## 🔧 Puertos Configurados
 
-Check out a few resources that may come in handy when working with NestJS:
+| Servicio | Puerto | Descripción |
+|----------|--------|-------------|
+| **API NestJS** | `3000` | Aplicación principal |
+| **Swagger Docs** | `3000/api` | Documentación interactiva |
+| **MySQL** | `3307` | Base de datos (puerto único) |
+| **phpMyAdmin** | `8081` | Interfaz web BD (puerto único) |
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🚀 Ejecutar la aplicación
 
-## Support
+```bash
+# Modo desarrollo con hot-reload
+npm run start:dev
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Modo producción
+npm run build
+npm run start:prod
+```
 
-## Stay in touch
+## 📚 Endpoints de la API
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Estudiantes
+- `GET /students` - Listar estudiantes (con filtros)
+- `POST /students` - Crear estudiante
+- `GET /students/:id` - Obtener estudiante por ID
+- `PATCH /students/:id` - Actualizar estudiante
+- `DELETE /students/:id` - Eliminar estudiante
 
-## License
+### Mentores
+- `GET /mentors` - Listar mentores (con filtros)
+- `POST /mentors` - Crear mentor
+- `GET /mentors/match` - Buscar mentores compatibles
+- `GET /mentors/:id` - Obtener mentor por ID
+- `PATCH /mentors/:id` - Actualizar mentor
+- `DELETE /mentors/:id` - Eliminar mentor
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🎯 Acceder a los servicios
+
+- **API Principal**: http://localhost:3000
+- **Documentación Swagger**: http://localhost:3000/api
+- **phpMyAdmin**: http://localhost:8081
+  - Usuario: `root`
+  - Contraseña: `root_password`
+
+## 🗃️ Modelo de Datos
+
+### Estudiantes
+- Nombre completo, email, sede, carrera, asignatura, año, idioma, modalidad, descripción
+
+### Mentores
+- Nombre completo, email, sede, carrera, especialidad, idiomas, modalidad, bio, disponibilidad
+
+## 🧪 Ejecutar pruebas
+
+```bash
+# Tests unitarios
+npm run test
+
+# Tests con watch
+npm run test:watch
+
+# Tests de integración
+npm run test:e2e
+
+# Cobertura de tests
+npm run test:cov
+
+# Probar API completa
+npm run test:api
+```
+
+## 📁 Estructura del proyecto
+
+```
+src/
+├── generated/          # Cliente Prisma generado
+├── mentors/           # Módulo de mentores
+│   ├── dto/          # Data Transfer Objects
+│   ├── mentors.controller.ts
+│   ├── mentors.service.ts
+│   └── mentors.module.ts
+├── prisma/            # Configuración Prisma
+│   ├── prisma.service.ts
+│   └── prisma.module.ts
+├── students/          # Módulo de estudiantes
+│   ├── dto/          # Data Transfer Objects
+│   ├── students.controller.ts
+│   ├── students.service.ts
+│   └── students.module.ts
+├── app.controller.ts
+├── app.module.ts
+├── app.service.ts
+└── main.ts
+```
+
+## 🛠️ Tecnologías utilizadas
+
+- **Framework**: [NestJS](https://nestjs.com/)
+- **ORM**: [Prisma](https://prisma.io/) v7
+- **Base de datos**: MySQL con Docker
+- **Documentación**: [Swagger/OpenAPI](https://swagger.io/)
+- **Runtime**: Node.js ESM
+- **Lenguaje**: TypeScript
+- **Contenedores**: Docker & Docker Compose
+
+## 📖 Más información
+
+- [Documentación NestJS](https://docs.nestjs.com/)
+- [Documentación Prisma](https://www.prisma.io/docs)
+- [Swagger/OpenAPI](https://swagger.io/docs/)

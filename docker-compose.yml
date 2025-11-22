@@ -10,7 +10,7 @@ services:
       MYSQL_USER: mentoria_user
       MYSQL_PASSWORD: mentoria_password
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       # Custom MySQL configuration - Configuración personalizada de MySQL
@@ -35,7 +35,7 @@ services:
       PMA_PASSWORD: root_password
       UPLOAD_LIMIT: 100M
     ports:
-      - "8080:80"
+      - "8081:80"
     depends_on:
       - mysql
     networks:
