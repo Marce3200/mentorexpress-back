@@ -8,7 +8,7 @@ import { darkModeCss } from './darkModeCss.js';
 import { AppModule } from './app.module.js';
 
 async function bootstrap() {
-  const app = await NestFastifyApplication.create<NestFastifyApplication>(
+  const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     new FastifyAdapter({ logger: true }),
   );
