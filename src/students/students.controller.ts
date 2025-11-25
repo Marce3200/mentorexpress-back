@@ -116,4 +116,29 @@ export class StudentsController {
   remove(@Param('id') id: string) {
     return this.studentsService.remove(+id);
   }
+
+  @Post('request-help')
+  @UsePipes(new ZodValidationPipe(createStudentSchema))
+  @ApiOperation({
+    summary: 'Procesar solicitud de ayuda con triaje y matching automático',
+    description:
+      'Clasifica la solicitud como académica o emocional usando ML. ' +
+      'Si es emocional, deriva a Bienestar Estudiantil. ' +
+      'Si es académica, busca automáticamente los mejores mentores compatibles.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Solicitud procesada exitosamente',
+  })
+  @ApiResponse({
+    status: 503,
+    description: 'Servicio ML no disponible',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'No hay mentores disponibles con los criterios',
+  })
+  async requestHelp(@Body() createStudentDto: CreateStudentDto) {
+    return this.studentsService.processHelpRequest(createStudentDto);
+  }
 }
