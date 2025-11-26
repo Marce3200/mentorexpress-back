@@ -124,11 +124,12 @@ export class StudentsController {
     description:
       'Clasifica la solicitud como académica o emocional usando ML. ' +
       'Si es emocional, deriva a Bienestar Estudiantil. ' +
-      'Si es académica, busca automáticamente los mejores mentores compatibles.',
+      'Si es académica, busca automáticamente los mejores mentores compatibles. ' +
+      'Retorna lista de candidatos para que el usuario seleccione uno.',
   })
   @ApiResponse({
     status: 201,
-    description: 'Solicitud procesada exitosamente',
+    description: 'Solicitud procesada exitosamente. Retorna candidatos.',
   })
   @ApiResponse({
     status: 503,
@@ -140,5 +141,39 @@ export class StudentsController {
   })
   async requestHelp(@Body() createStudentDto: CreateStudentDto) {
     return this.studentsService.processHelpRequest(createStudentDto);
+  }
+
+  @Post(':studentId/select-mentor/:mentorId')
+  @ApiOperation({
+    summary: 'Confirmar selección de mentor',
+    description:
+      'El estudiante selecciona un mentor de la lista de candidatos. ' +
+      'Se envían emails de confirmación tanto al estudiante como al mentor.',
+  })
+  @ApiParam({
+    name: 'studentId',
+    description: 'ID del estudiante',
+    type: Number,
+    example: 1,
+  })
+  @ApiParam({
+    name: 'mentorId',
+    description: 'ID del mentor seleccionado',
+    type: Number,
+    example: 5,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Match confirmado y emails enviados',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Estudiante o mentor no encontrado',
+  })
+  async selectMentor(
+    @Param('studentId') studentId: string,
+    @Param('mentorId') mentorId: string,
+  ) {
+    return this.studentsService.selectMentor(+studentId, +mentorId);
   }
 }

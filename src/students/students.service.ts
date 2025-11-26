@@ -36,9 +36,20 @@ export interface HelpRequestResult {
           campus: string;
           career: string;
           specialtySubject: string;
+          availability: string;
         }>;
         mensaje: string;
       };
+}
+
+export interface SelectMentorResult {
+  student: Student;
+  mentor: {
+    id: number;
+    fullName: string;
+    email: string;
+  };
+  mensaje: string;
 }
 
 @Injectable()
@@ -149,12 +160,6 @@ export class StudentsService {
         'Solicitud clasificada como EMOCIONAL - Derivando a bienestar',
       );
 
-      // Enviar email de derivación
-      await this.emailService.sendEmotionalSupportEmail({
-        email: student.email,
-        fullName: student.fullName,
-      });
-
       return {
         student,
         triaje: {
@@ -165,8 +170,7 @@ export class StudentsService {
           tipo: 'emocional',
           mensaje:
             'Tu solicitud ha sido clasificada como apoyo emocional. ' +
-            'Te recomendamos contactar con Bienestar Estudiantil para ' +
-            'recibir el apoyo que necesitas. Te hemos enviado un email con más información.',
+            'Te recomendamos contactar con Bienestar Estudiantil para recibir el apoyo que necesitas.',
           accion: 'derivar_bienestar',
         },
       };
@@ -230,36 +234,13 @@ export class StudentsService {
         campus: mentor.campus,
         career: mentor.career,
         specialtySubject: mentor.specialtySubject,
+        availability: mentor.availability,
       };
     });
 
     this.logger.log(
       `Matching completado. Mejores mentores: ${mentoresCompatibles.length}`,
     );
-
-    // 5. Enviar emails
-    await this.emailService.sendMatchResultsEmail(
-      {
-        email: student.email,
-        fullName: student.fullName,
-      },
-      mentoresCompatibles,
-    );
-
-    // Enviar email a cada mentor
-    for (const mentor of mentoresCompatibles) {
-      await this.emailService.sendMentorMatchEmail(
-        {
-          email: mentor.email,
-          fullName: mentor.fullName,
-        },
-        {
-          fullName: student.fullName,
-          subject: this.mapEnumToSpanish(student.subject),
-          request: student.request,
-        },
-      );
-    }
 
     return {
       student,
@@ -270,10 +251,79 @@ export class StudentsService {
       resultado: {
         tipo: 'academica',
         mentores: mentoresCompatibles,
-        mensaje:
-          `Hemos encontrado ${mentoresCompatibles.length} mentores compatibles. ` +
-          'Te hemos enviado un email con más información.',
+        mensaje: `Hemos encontrado ${mentoresCompatibles.length} mentores compatibles. Por favor selecciona uno para continuar.`,
       },
+    };
+  }
+
+  /**
+   * Confirma la selección de un mentor y envía las notificaciones por email
+   */
+  async selectMentor(
+    studentId: number,
+    mentorId: number,
+  ): Promise<SelectMentorResult> {
+    this.logger.log(
+      `Procesando selección de mentor. Estudiante: ${studentId}, Mentor: ${mentorId}`,
+    );
+
+    // 1. Obtener datos del estudiante
+    const student = await this.findOne(studentId);
+    if (!student) {
+      throw new HttpException(
+        `Estudiante con ID ${studentId} no encontrado`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    // 2. Obtener datos del mentor
+    const mentor = await this.mentorsService.findOne(mentorId);
+    if (!mentor) {
+      throw new HttpException(
+        `Mentor con ID ${mentorId} no encontrado`,
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    this.logger.log(
+      `Match confirmado: ${student.fullName} <-> ${mentor.fullName}`,
+    );
+
+    // 3. Enviar email al estudiante
+    await this.emailService.sendMatchConfirmationToStudent({
+      email: student.email,
+      fullName: student.fullName,
+      mentor: {
+        fullName: mentor.fullName,
+        email: mentor.email,
+        specialtySubject: this.mapEnumToSpanish(mentor.specialtySubject),
+        availability: mentor.availability,
+      },
+    });
+
+    // 4. Enviar email al mentor
+    await this.emailService.sendMatchConfirmationToMentor({
+      email: mentor.email,
+      fullName: mentor.fullName,
+      student: {
+        fullName: student.fullName,
+        email: student.email,
+        subject: this.mapEnumToSpanish(student.subject),
+        request: student.request,
+      },
+    });
+
+    this.logger.log('Emails de confirmación enviados exitosamente');
+
+    return {
+      student,
+      mentor: {
+        id: mentor.id,
+        fullName: mentor.fullName,
+        email: mentor.email,
+      },
+      mensaje:
+        'Match confirmado exitosamente. Se han enviado emails a ambas partes con la información de contacto.',
     };
   }
 

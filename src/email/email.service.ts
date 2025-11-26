@@ -5,65 +5,39 @@ export class EmailService {
   private readonly logger = new Logger(EmailService.name);
 
   /**
-   * Envía email al estudiante con resultado de triaje emocional
+   * Envía email al estudiante confirmando el match con el mentor seleccionado
    */
-  async sendEmotionalSupportEmail(student: {
+  async sendMatchConfirmationToStudent(data: {
     email: string;
     fullName: string;
+    mentor: {
+      fullName: string;
+      email: string;
+      specialtySubject: string;
+      availability: string;
+    };
   }): Promise<void> {
     // TODO: Implementar con Nodemailer, SendGrid, etc.
-    this.logger.log(`📧 Enviando email de apoyo emocional a: ${student.email}`);
+    this.logger.log(
+      `📧 Enviando confirmación de match a estudiante: ${data.email}`,
+    );
     this.logger.log(`
       ═══════════════════════════════════════════════════════════
-      Para: ${student.email}
-      Asunto: Derivación a Bienestar Estudiantil
+      Para: ${data.email}
+      Asunto: ¡Match confirmado con tu mentor!
       ───────────────────────────────────────────────────────────
-      Hola ${student.fullName},
+      Hola ${data.fullName},
       
-      Hemos recibido tu solicitud y notamos que podrías beneficiarte
-      del apoyo de nuestro equipo de Bienestar Estudiantil.
+      ¡Excelente noticia! Tu solicitud ha sido confirmada.
       
-      Te invitamos a contactar con ellos para recibir el apoyo
-      emocional que necesitas.
+      Tu mentor asignado es:
+      👤 Nombre: ${data.mentor.fullName}
+      📧 Email: ${data.mentor.email}
+      📚 Especialidad: ${data.mentor.specialtySubject}
+      🕐 Disponibilidad: ${data.mentor.availability}
       
-      📞 Contacto: bienestar@universidad.cl
-      📱 Teléfono: +56 2 1234 5678
-      🏢 Oficina: Edificio Central, 2do piso
-      
-      ¡Estamos aquí para apoyarte!
-      
-      Equipo MentorExpress
-      ═══════════════════════════════════════════════════════════
-    `);
-  }
-
-  /**
-   * Envía email al estudiante con mentores compatibles
-   */
-  async sendMatchResultsEmail(
-    student: { email: string; fullName: string },
-    mentors: Array<{ fullName: string; email: string; matchScore: number }>,
-  ): Promise<void> {
-    this.logger.log(`📧 Enviando resultados de matching a: ${student.email}`);
-    this.logger.log(`
-      ═══════════════════════════════════════════════════════════
-      Para: ${student.email}
-      Asunto: ¡Hemos encontrado mentores para ti!
-      ───────────────────────────────────────────────────────────
-      Hola ${student.fullName},
-      
-      ¡Buenas noticias! Hemos encontrado ${mentors.length} mentores
-      compatibles con tu solicitud:
-      
-      ${mentors
-        .map(
-          (m, i) =>
-            `${i + 1}. ${m.fullName} - ${(m.matchScore * 100).toFixed(0)}% compatibilidad`,
-        )
-        .join('\n      ')}
-      
-      Los mentores recibirán tu solicitud y pronto te contactarán
-      para coordinar una sesión de ayuda.
+      Tu mentor te contactará pronto para coordinar la sesión.
+      También puedes contactarle directamente al email proporcionado.
       
       ¡Mucho éxito en tus estudios!
       
@@ -73,28 +47,40 @@ export class EmailService {
   }
 
   /**
-   * Envía email al mentor notificándole de un match
+   * Envía email al mentor confirmando el match con el estudiante
    */
-  async sendMentorMatchEmail(
-    mentor: { email: string; fullName: string },
-    student: { fullName: string; subject: string; request: string },
-  ): Promise<void> {
+  async sendMatchConfirmationToMentor(data: {
+    email: string;
+    fullName: string;
+    student: {
+      fullName: string;
+      email: string;
+      subject: string;
+      request: string;
+    };
+  }): Promise<void> {
     this.logger.log(
-      `📧 Enviando notificación de match a mentor: ${mentor.email}`,
+      `📧 Enviando confirmación de match a mentor: ${data.email}`,
     );
     this.logger.log(`
       ═══════════════════════════════════════════════════════════
-      Para: ${mentor.email}
-      Asunto: Nuevo estudiante compatible con tu perfil
+      Para: ${data.email}
+      Asunto: Nuevo estudiante asignado
       ───────────────────────────────────────────────────────────
-      Hola ${mentor.fullName},
+      Hola ${data.fullName},
       
-      Un estudiante (${student.fullName}) necesita ayuda en ${student.subject}:
+      Has sido seleccionado para ayudar a un estudiante.
       
-      "${student.request}"
+      Información del estudiante:
+      👤 Nombre: ${data.student.fullName}
+      📧 Email: ${data.student.email}
+      📚 Asignatura: ${data.student.subject}
       
-      Por favor revisa tu disponibilidad y contacta al estudiante
-      lo antes posible.
+      Solicitud:
+      "${data.student.request}"
+      
+      Por favor contacta al estudiante lo antes posible para
+      coordinar la sesión de ayuda.
       
       ¡Gracias por ser parte de MentorExpress!
       
