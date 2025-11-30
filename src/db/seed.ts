@@ -137,7 +137,6 @@ async function main() {
       language: languageMap[row.Idioma.toLowerCase()],
       modality: modalityMap[row.Modalidad.toLowerCase()],
       bio: row.Bio,
-      availability: 'Lunes a Viernes, 9:00 - 18:00', // Default availability
     }));
 
     await db.insert(mentors).values(mentorValues);

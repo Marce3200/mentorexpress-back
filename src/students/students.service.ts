@@ -36,7 +36,6 @@ export interface HelpRequestResult {
           campus: string;
           career: string;
           specialtySubject: string;
-          availability: string;
         }>;
         mensaje: string;
       };
@@ -234,7 +233,6 @@ export class StudentsService {
         campus: mentor.campus,
         career: mentor.career,
         specialtySubject: mentor.specialtySubject,
-        availability: mentor.availability,
       };
     });
 
@@ -297,7 +295,6 @@ export class StudentsService {
         fullName: mentor.fullName,
         email: mentor.email,
         specialtySubject: this.mapEnumToSpanish(mentor.specialtySubject),
-        availability: mentor.availability,
       },
     });
 

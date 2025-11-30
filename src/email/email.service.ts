@@ -14,7 +14,6 @@ export class EmailService {
       fullName: string;
       email: string;
       specialtySubject: string;
-      availability: string;
     };
   }): Promise<void> {
     // TODO: Implementar con Nodemailer, SendGrid, etc.
@@ -34,9 +33,8 @@ export class EmailService {
       👤 Nombre: ${data.mentor.fullName}
       📧 Email: ${data.mentor.email}
       📚 Especialidad: ${data.mentor.specialtySubject}
-      🕐 Disponibilidad: ${data.mentor.availability}
       
-      Tu mentor te contactará pronto para coordinar la sesión.
+      Recibirás un enlace de Calendly para agendar tu sesión de mentoría.
       También puedes contactarle directamente al email proporcionado.
       
       ¡Mucho éxito en tus estudios!

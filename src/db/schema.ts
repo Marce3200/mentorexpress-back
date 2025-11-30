@@ -177,10 +177,6 @@ export const mentors = mysqlTable('mentors', {
    */
   bio: text('bio').notNull(),
   /**
-   * Disponibilidad horaria del mentor
-   */
-  availability: text('availability').notNull(),
-  /**
    * Fecha de creación del registro
    */
   createdAt: timestamp('created_at').defaultNow().notNull(),

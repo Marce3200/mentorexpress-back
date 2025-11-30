@@ -65,8 +65,7 @@ async function testAPI() {
     specialtySubject: "PROGRAMMING",
     language: "SPANISH_ENGLISH",
     modality: "ONLINE",
-    bio: "Profesor con 15 años de experiencia en desarrollo de software y algoritmos",
-    availability: "Lunes a viernes 14:00-18:00"
+    bio: "Profesor con 15 años de experiencia en desarrollo de software y algoritmos"
   };
 
   const createdMentor = await makeRequest('/mentors', {
