@@ -95,9 +95,9 @@ export const students = mysqlTable('students', {
    */
   fullName: varchar('full_name', { length: 255 }).notNull(),
   /**
-   * Email único del estudiante
+   * Email del estudiante
    */
-  email: varchar('email', { length: 255 }).unique().notNull(),
+  email: varchar('email', { length: 255 }).notNull(),
   /**
    * Campus universitario del estudiante
    */
@@ -149,9 +149,9 @@ export const mentors = mysqlTable('mentors', {
    */
   fullName: varchar('full_name', { length: 255 }).notNull(),
   /**
-   * Email único del mentor
+   * Email del mentor
    */
-  email: varchar('email', { length: 255 }).unique().notNull(),
+  email: varchar('email', { length: 255 }).notNull(),
   /**
    * Campus universitario del mentor
    */

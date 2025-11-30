@@ -146,7 +146,7 @@ export class StudentsService {
   async processHelpRequest(data: StudentInsert): Promise<HelpRequestResult> {
     this.logger.log(`Procesando solicitud de ayuda para: ${data.email}`);
 
-    // 1. Guardar estudiante en DB
+    // 1. Guardar estudiante en DB (permite duplicados para MVP)
     const student = await this.create(data);
     this.logger.log(`Estudiante creado con ID: ${student.id}`);
 
