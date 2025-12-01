@@ -233,6 +233,7 @@ export class StudentsService {
         campus: mentor.campus,
         career: mentor.career,
         specialtySubject: mentor.specialtySubject,
+        bio: mentor.bio,
       };
     });
 
