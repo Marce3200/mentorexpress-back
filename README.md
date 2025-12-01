@@ -7,6 +7,7 @@ Un sistema completo de mentoría académica construido con **NestJS**, **Drizzle
 - ✅ **API REST completa** para gestión de estudiantes y mentores
 - ✅ **Drizzle ORM** con MySQL
 - ✅ **Documentación Swagger** automática e interactiva
+- ✅ **Integración con servicio ML (FastAPI)** para triaje académico/emocional y matching estudiante-mentor
 - ✅ **Validación de datos** con DTOs tipados
 - ✅ **Base de datos MySQL** con Docker
 - ✅ **Drizzle Studio** para gestión visual de BD
@@ -31,6 +32,11 @@ npm install
 cp .env.example .env
 # Editar .env según sea necesario
 ```
+
+Las variables más relevantes incluyen:
+
+- `DATABASE_URL`: cadena de conexión a MySQL.
+- `ML_SERVICE_URL`: URL base del servicio ML (FastAPI) usada por `MlClientService` (por defecto `http://localhost:8000` si no se define).
 
 ### 3. Levantar servicios de base de datos
 ```bash
@@ -78,6 +84,8 @@ npm run deploy  # Compila, migra BD y ejecuta en producción
 - `GET /students/:id` - Obtener estudiante por ID
 - `PATCH /students/:id` - Actualizar estudiante
 - `DELETE /students/:id` - Eliminar estudiante
+- `POST /students/request-help` - Procesar solicitud de ayuda con triaje ML (académica vs emocional) y matching automático de mentores.
+- `POST /students/:studentId/select-mentor/:mentorId` - Confirmar selección de mentor y enviar emails de notificación.
 
 ### Mentores
 - `GET /mentors` - Listar mentores (con filtros)
