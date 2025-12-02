@@ -169,7 +169,7 @@ export class StudentsService {
           tipo: 'emocional',
           mensaje:
             'Tu solicitud ha sido clasificada como apoyo emocional. ' +
-            'Te recomendamos contactar con Bienestar Estudiantil para recibir el apoyo que necesitas.',
+            'Bienestar estudiantil se comunicará contigo a la brevedad y te dará el apoyo que necesitas.',
           accion: 'derivar_bienestar',
         },
       };
